@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Árvores Frutíferas – Ifes Cachoeiro de Itapemirim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --verde-escuro: #7a2e00;
+      --verde-medio: #c45000;
+      --verde-claro: #ff7c2a;
+      --folha: #ffab70;
+      --terra: #8b5e3c;
+      --fruto: #e05a00;
+      --ouro: #ffcc44;
+      --creme: #fff8f2;
+      --branco: #ffffff;
+      --cinza: #444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--creme);
+      color: var(--cinza);
+    }
+
+    /* ========== CAPA ========== */
+    .capa {
+      min-height: 100vh;
+      background: linear-gradient(160deg, var(--verde-escuro) 0%, var(--verde-medio) 55%, #1b6b3a 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    .capa::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(82,183,136,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(240,180,60,0.12) 0%, transparent 50%);
+    }
+
+    /* SVG decorativo de folhas */
+    .folhas-deco {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      opacity: 0.13;
+    }
+
+    .capa-logo {
+      width: 80px;
+      height: 80px;
+      background: var(--ouro);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 40px rgba(242,204,96,0.4);
+      position: relative;
+      z-index: 1;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 30px rgba(242,204,96,0.4); }
+      50%      { box-shadow: 0 0 60px rgba(242,204,96,0.7); }
+    }
+
+    .capa-instituicao {
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--ouro);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .capa-titulo {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      color: var(--branco);
+      line-height: 1.15;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0.6rem;
+    }
+
+    .capa-subtitulo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--folha);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 2rem;
+    }
+
+    .capa-linha {
+      width: 60px;
+      height: 3px;
+      background: var(--ouro);
+      margin: 0 auto 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .capa-info {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.75);
+      font-size: 0.95rem;
+    }
+
+    .capa-info strong { color: var(--branco); }
+
+    .capa-badges {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 99px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.05em;
+    }
+
+    /* ========== NAVEGAÇÃO ========== */
+    nav {
+      background: var(--verde-escuro);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      gap: 0.2rem;
+      padding: 0.6rem 1rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.9rem;
+      border-radius: 4px;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    nav a:hover {
+      background: var(--verde-claro);
+      color: var(--branco);
+    }
+
+    /* ========== SEÇÕES ========== */
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--verde-claro);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--verde-escuro);
+      margin-bottom: 1.2rem;
+    }
+
+    .divider {
+      width: 50px;
+      height: 3px;
+      background: var(--fruto);
+      margin-bottom: 2rem;
+    }
+
+    /* ========== SOBRE ========== */
+    #sobre p {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: #555;
+      max-width: 750px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .stat-card {
+      background: var(--verde-escuro);
+      color: var(--branco);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--ouro);
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-top: 0.3rem;
+    }
+
+    /* ========== CARDS DE ÁRVORES ========== */
+    .trees-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .tree-card {
+      background: var(--branco);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .tree-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.13);
+    }
+
+    .tree-img-wrap {
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+      background: var(--verde-escuro);
+    }
+
+    .tree-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .tree-card:hover .tree-img-wrap img {
+      transform: scale(1.06);
+    }
+
+    .tree-emoji-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      font-size: 5rem;
+    }
+
+    .tree-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--fruto);
+      color: var(--branco);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border-radius: 99px;
+    }
+
+    .tree-body {
+      padding: 1.5rem;
+    }
+
+    .tree-nome {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--verde-escuro);
+      margin-bottom: 0.2rem;
+    }
+
+    .tree-cientifico {
+      font-style: italic;
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .tree-local {
+      font-size: 0.88rem;
+      color: #555;
+      display: flex;
+      gap: 0.4rem;
+      align-items: flex-start;
+      margin-bottom: 0.6rem;
+    }
+
+    .tree-local .icon { color: var(--verde-claro); flex-shrink: 0; margin-top: 1px; }
+
+    .tree-coords {
+      font-size: 0.78rem;
+      color: #999;
+      font-family: monospace;
+      margin-bottom: 1rem;
+    }
+
+    .tree-desc {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.7;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* ========== TABELA ========== */
+    #mapa-tabela {
+      background: #ffeedd;
+    }
+
+    .tabela-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--branco);
+      font-size: 0.9rem;
+    }
+
+    thead tr {
+      background: var(--verde-escuro);
+      color: var(--branco);
+    }
+
+    thead th {
+      padding: 1rem 1.2rem;
+      text-align: left;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    tbody tr:nth-child(even) { background: #fff8f2; }
+    tbody tr:hover { background: #ffe5cc; }
+
+    tbody td {
+      padding: 0.85rem 1.2rem;
+      border-bottom: 1px solid #eee;
+      color: #444;
+    }
+
+    tbody td:first-child {
+      font-family: 'Playfair Display', serif;
+      color: var(--verde-escuro);
+      font-size: 1rem;
+    }
+
+    .coord-cell { font-family: monospace; font-size: 0.78rem; color: #888; }
+
+    /* ========== MAPA EMBED ========== */
+    .mapa-embed-container {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      margin-top: 2rem;
+      height: 420px;
+    }
+
+    .mapa-embed-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ========== LLM INFO ========== */
+    #llm-info {
+      background: var(--verde-escuro);
+      color: rgba(255,255,255,0.85);
+    }
+
+    #llm-info .section-title { color: var(--ouro); }
+    #llm-info .section-label { color: var(--folha); }
+    #llm-info .divider { background: var(--ouro); }
+
+    .llm-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .llm-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 1.8rem;
+    }
+
+    .llm-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--ouro);
+      margin-bottom: 0.8rem;
+    }
+
+    .llm-box p, .llm-box li {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .llm-box ul { padding-left: 1.2rem; }
+
+    .prompt-box {
+      background: rgba(0,0,0,0.25);
+      border-left: 3px solid var(--verde-claro);
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      font-family: monospace;
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.7;
+      white-space: pre-wrap;
+      margin-top: 0.8rem;
+    }
+
+    /* ========== EQUIPE ========== */
+    .equipe-card {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+
+    .membro {
+      background: var(--branco);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .membro-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--verde-claro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--branco);
+      flex-shrink: 0;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      background: #111;
+      color: rgba(255,255,255,0.45);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      line-height: 1.8;
+    }
+
+    footer strong { color: rgba(255,255,255,0.7); }
+
+    /* ========== RESPONSIVO ========== */
+    @media (max-width: 600px) {
+      .trees-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== CAPA ===== -->
+<header class="capa" id="inicio">
+  <svg class="folhas-deco" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="100" cy="120" rx="80" ry="30" fill="#ff7c2a" transform="rotate(-30 100 120)"/>
+    <ellipse cx="700" cy="80" rx="90" ry="28" fill="#ffab70" transform="rotate(20 700 80)"/>
+    <ellipse cx="600" cy="480" rx="70" ry="22" fill="#ff7c2a" transform="rotate(-15 600 480)"/>
+    <ellipse cx="150" cy="520" rx="100" ry="30" fill="#c45000" transform="rotate(10 150 520)"/>
+    <ellipse cx="400" cy="30" rx="60" ry="18" fill="#ffab70" transform="rotate(5 400 30)"/>
+    <circle cx="750" cy="350" r="60" fill="#c45000" opacity="0.5"/>
+    <circle cx="50" cy="300" r="45" fill="#c45000" opacity="0.4"/>
+  </svg>
+
+  <div class="capa-logo">🌳</div>
+
+  <p class="capa-instituicao">Instituto Federal do Espírito Santo — Campus Cachoeiro de Itapemirim</p>
+  <h1 class="capa-titulo">Árvores Frutíferas<br/>do Campus</h1>
+  <p class="capa-subtitulo">Um inventário vivo da biodiversidade do Ifes Cachoeiro</p>
+  <div class="capa-linha"></div>
+
+  <div class="capa-info">
+    <span><strong>Local:</strong> Ifes – Campus Cachoeiro de Itapemirim, ES</span>
+  </div>
+
+  <div class="capa-badges">
+    <span class="badge">🌿 12 espécies mapeadas</span>
+    <span class="badge">📍 Coordenadas GPS</span>
+    <span class="badge">🤖 Gerado com IA</span>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <a href="#inicio">Início</a>
+  <a href="#sobre">Sobre</a>
+  <a href="#arvores">Árvores</a>
+  <a href="#mapa-tabela">Mapa & Tabela</a>
+  <a href="#llm-info">Sobre a IA</a>
+
+</nav>
+
+<!-- ===== SOBRE ===== -->
+<section id="sobre">
+  <p class="section-label">Contexto</p>
+  <h2 class="section-title">O Verde do Campus</h2>
+  <div class="divider"></div>
+  <p>
+    O Campus Cachoeiro de Itapemirim do Instituto Federal do Espírito Santo (Ifes) abriga, ao longo de seus
+    blocos e áreas externas, uma diversidade notável de árvores frutíferas. Este trabalho registra e apresenta
+    cada espécie identificada pelos alunos, indicando sua localização precisa por coordenadas geográficas e
+    descrevendo suas características botânicas, seu fruto e importância ecológica e alimentar.
+  </p>
+  <p style="margin-top:1rem; max-width:750px; font-size:1.05rem; line-height:1.85; color:#555;">
+    O levantamento integra doze espécies distribuídas pelo campus, revelando um patrimônio verde que vai da
+    tradicional mangueira ao exótico jambeiro, passando por goiabeiras, limoeiros, aceroleiras e muitas outras.
+  </p>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Espécies registradas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">13</div>
+      <div class="stat-label">Árvores mapeadas</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Localidades distintas</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== ÁRVORES ===== -->
+<section id="arvores" style="background:#fff3ec; padding:5rem 2rem; max-width:100%;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="section-label">Inventário</p>
+    <h2 class="section-title">As Frutíferas do Campus</h2>
+    <div class="divider"></div>
+
+    <div class="trees-grid">
+
+      <!-- GOIABEIRA 1 -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Guava_ID.jpg/640px-Guava_ID.jpg" alt="Goiabeira" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍃</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Goiabeira</h3>
+          <p class="tree-cientifico">Psidium guajava</p>
+          <p class="tree-local"><span class="icon">📍</span> Atrás do estacionamento do bloco 0 e atrás da biblioteca</p>
+          <p class="tree-coords">-20.8036000, -41.1545974</p>
+          <p class="tree-desc">Árvore tropical de porte médio, amplamente cultivada por seus frutos ricos em vitamina C. A goiaba pode ser consumida in natura ou em sucos, doces e geleias. Seu fruto tem casca verde-amarelada e polpa branca ou rosada, perfumada e doce.</p>
+        </div>
+      </div>
+
+      <!-- AMOREIRA -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Morus_nigra_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-115.jpg/480px-Morus_nigra_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-115.jpg" alt="Amoreira" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🫐</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Amoreira</h3>
+          <p class="tree-cientifico">Morus nigra</p>
+          <p class="tree-local"><span class="icon">📍</span> Ao lado do pé de uva, em direção ao galpão</p>
+          <p class="tree-coords">-20.8036329, -41.1544003</p>
+          <p class="tree-desc">A amoreira produz amoras escuras e suculentas, ricas em antocianinas e com propriedades antioxidantes. Além dos frutos, suas folhas são alimento do bicho-da-seda. É uma árvore de crescimento rápido e folhas largas e rugosas.</p>
+        </div>
+      </div>
+
+      <!-- VIDEIRA (UVA) -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Wine_grapes03.jpg/640px-Wine_grapes03.jpg" alt="Videira uva" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍇</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Videira (Uva)</h3>
+          <p class="tree-cientifico">Vitis vinifera</p>
+          <p class="tree-local"><span class="icon">📍</span> Ao lado da goiabeira, atrás do bloco 0</p>
+          <p class="tree-coords">-20.8036172, -41.1545086</p>
+          <p class="tree-desc">Planta trepadeira produtora de uvas, cultivada há milênios. No campus, a videira cresce espontaneamente próxima à goiabeira. Seus cachos de uvas servem para consumo in natura, além de sucos e fermentados.</p>
+        </div>
+      </div>
+
+      <!-- LIMOEIRO 1 -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/640px-Hapus_Mango.jpg" alt="Limoeiro" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <!-- imagem de fallback mais adequada -->
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lemon_-_Uckfield%2C_East_Sussex%2C_UK.jpg/640px-Lemon_-_Uckfield%2C_East_Sussex%2C_UK.jpg" alt="Limão" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍋</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Limoeiro</h3>
+          <p class="tree-cientifico">Citrus limon</p>
+          <p class="tree-local"><span class="icon">📍</span> Em frente à goiabeira, atrás do bloco 0</p>
+          <p class="tree-coords">-20.8036558, -41.1545525</p>
+          <p class="tree-desc">Árvore cítrica de pequeno porte, muito presente em quintais e jardins. Produz limões ácidos e perfumados, utilizados na culinária, em sucos, temperos e limpeza. Suas flores brancas exalam aroma inebriante.</p>
+        </div>
+      </div>
+
+      <!-- MANGUEIRA -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Hapus_Mango.jpg/640px-Hapus_Mango.jpg" alt="Manga" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🥭</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Mangueira</h3>
+          <p class="tree-cientifico">Mangifera indica</p>
+          <p class="tree-local"><span class="icon">📍</span> Ao lado da rua lateral ao bloco 1</p>
+          <p class="tree-coords">-20.8031825, -41.1543258</p>
+          <p class="tree-desc">Uma das árvores frutíferas mais amadas do Brasil. A mangueira produz mangas suculentas, doces e ricas em vitaminas A e C. Porte imponente com copa densa que oferece sombra generosa. Fruto símbolo do verão brasileiro.</p>
+        </div>
+      </div>
+
+      <!-- ACEROLEIRA -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Malpighia_emarginata_fruit_-_Brazil.jpg/640px-Malpighia_emarginata_fruit_-_Brazil.jpg" alt="Acerola" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍒</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Aceroleira</h3>
+          <p class="tree-cientifico">Malpighia emarginata</p>
+          <p class="tree-local"><span class="icon">📍</span> No outro lado da rua, ao lado do bloco 5</p>
+          <p class="tree-coords">-20.8028794, -41.1541290</p>
+          <p class="tree-desc">Arbusto tropical produtor de acerola, campeã mundial em vitamina C — contém até 80× mais vitamina C que a laranja. Seus frutos vermelhos e arredondados são levemente ácidos e muito usados em sucos e polpas.</p>
+        </div>
+      </div>
+
+      <!-- COQUEIRO -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Coconut_on_tree_02.jpg/480px-Coconut_on_tree_02.jpg" alt="Coqueiro" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🥥</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Coqueiro</h3>
+          <p class="tree-cientifico">Cocos nucifera</p>
+          <p class="tree-local"><span class="icon">📍</span> Em direção ao galpão</p>
+          <p class="tree-coords">-20.8036457, -41.1544586</p>
+          <p class="tree-desc">Símbolo dos trópicos, o coqueiro é uma palmeira de grande porte. Produz o coco, cujas partes são integralmente aproveitadas: a água (hidratante natural), a polpa (alimento e produção de leite de coco) e a casca (artesanato e combustível).</p>
+        </div>
+      </div>
+
+      <!-- GOIABEIRA 2 -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Guava_ID.jpg/640px-Guava_ID.jpg" alt="Goiabeira" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍃</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Goiabeira</h3>
+          <p class="tree-cientifico">Psidium guajava</p>
+          <p class="tree-local"><span class="icon">📍</span> No outro lado da rua, lateral à quadra</p>
+          <p class="tree-coords">-20.8025670, -41.1539728</p>
+          <p class="tree-desc">Segunda ocorrência de goiabeira identificada no campus, desta vez próxima à quadra. Reforça a presença desta espécie nativa do Brasil e América Central, muito adaptada ao clima capixaba.</p>
+        </div>
+      </div>
+
+      <!-- LIMOEIRO 2 -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Lemon_-_Uckfield%2C_East_Sussex%2C_UK.jpg/640px-Lemon_-_Uckfield%2C_East_Sussex%2C_UK.jpg" alt="Limoeiro" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍋</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Limoeiro</h3>
+          <p class="tree-cientifico">Citrus limon</p>
+          <p class="tree-local"><span class="icon">📍</span> No outro lado da rua, ao lado do bloco 7</p>
+          <p class="tree-coords">-20.8026773, -41.1540053</p>
+          <p class="tree-desc">Segunda ocorrência de limoeiro no campus, localizada na rua lateral ao bloco 7. O limão é riquíssimo em vitamina C e tem uso culinário e medicinal muito difundido na cultura brasileira.</p>
+        </div>
+      </div>
+
+      <!-- GOIABEIRA 3 -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Guava_ID.jpg/640px-Guava_ID.jpg" alt="Goiabeira" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🍃</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Goiabeira</h3>
+          <p class="tree-cientifico">Psidium guajava</p>
+          <p class="tree-local"><span class="icon">📍</span> No outro lado da rua, direção ao bloco 7</p>
+          <p class="tree-coords">-20.8026491, -41.1539761</p>
+          <p class="tree-desc">Terceira ocorrência de goiabeira registrada. A grande quantidade desta espécie indica boa adaptação ao microclima local e à qualidade do solo na área próxima aos blocos de ensino.</p>
+        </div>
+      </div>
+
+      <!-- CAJUEIRO -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cashew_apple_and_nut.jpg/640px-Cashew_apple_and_nut.jpg" alt="Cajueiro" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🌰</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Cajueiro</h3>
+          <p class="tree-cientifico">Anacardium occidentale</p>
+          <p class="tree-local"><span class="icon">📍</span> No outro lado da rua, na lateral à quadra</p>
+          <p class="tree-coords">-20.8023535, -41.1538179</p>
+          <p class="tree-desc">Árvore nativa do Brasil, produtora do caju — fruto (pedúnculo) de cor amarela ou alaranjada — e da castanha-de-caju. Além do consumo in natura e industrial, o caju tem grande importância econômica e cultural no Brasil.</p>
+        </div>
+      </div>
+
+      <!-- JAMBEIRO -->
+      <div class="tree-card">
+        <div class="tree-img-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Syzygium_samarangense_in_India.jpg/640px-Syzygium_samarangense_in_India.jpg" alt="Jambo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+          <div class="tree-emoji-fallback" style="display:none">🔴</div>
+          <span class="tree-badge">Frutífera</span>
+        </div>
+        <div class="tree-body">
+          <h3 class="tree-nome">Jambeiro</h3>
+          <p class="tree-cientifico">Syzygium jambos</p>
+          <p class="tree-local"><span class="icon">📍</span> Entre o bloco 9 e o bloco 7</p>
+          <p class="tree-coords">-20.8025729, -41.1541465</p>
+          <p class="tree-desc">O jambeiro produz jambos — frutos vermelhos, brancos ou rosados com textura crocante e sabor suave. É uma árvore ornamental de porte médio a grande, muito apreciada também pela sombra que proporciona.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== TABELA + MAPA ===== -->
+<section id="mapa-tabela">
+  <p class="section-label">Registro Completo</p>
+  <h2 class="section-title">Tabela de Localização</h2>
+  <div class="divider"></div>
+
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Espécie</th>
+          <th>Nome Científico</th>
+          <th>Localização no Campus</th>
+          <th>Coordenadas GPS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>01</td><td>Goiabeira</td><td><em>Psidium guajava</em></td><td>Atrás do estacionamento do bloco 0 e atrás da biblioteca</td><td class="coord-cell">-20.8036000, -41.1545974</td></tr>
+        <tr><td>02</td><td>Amoreira</td><td><em>Morus nigra</em></td><td>Ao lado do pé de uva, em direção ao galpão</td><td class="coord-cell">-20.8036329, -41.1544003</td></tr>
+        <tr><td>03</td><td>Videira (Uva)</td><td><em>Vitis vinifera</em></td><td>Ao lado da goiabeira, atrás do bloco 0</td><td class="coord-cell">-20.8036172, -41.1545086</td></tr>
+        <tr><td>04</td><td>Limoeiro</td><td><em>Citrus limon</em></td><td>Em frente à goiabeira, atrás do bloco 0</td><td class="coord-cell">-20.8036558, -41.1545525</td></tr>
+        <tr><td>05</td><td>Mangueira</td><td><em>Mangifera indica</em></td><td>Ao lado da rua lateral ao bloco 1</td><td class="coord-cell">-20.8031825, -41.1543258</td></tr>
+        <tr><td>06</td><td>Aceroleira</td><td><em>Malpighia emarginata</em></td><td>No outro lado da rua, ao lado do bloco 5</td><td class="coord-cell">-20.8028794, -41.1541290</td></tr>
+        <tr><td>07</td><td>Coqueiro</td><td><em>Cocos nucifera</em></td><td>Em direção ao galpão</td><td class="coord-cell">-20.8036457, -41.1544586</td></tr>
+        <tr><td>08</td><td>Goiabeira</td><td><em>Psidium guajava</em></td><td>No outro lado da rua, lateral à quadra</td><td class="coord-cell">-20.8025670, -41.1539728</td></tr>
+        <tr><td>09</td><td>Limoeiro</td><td><em>Citrus limon</em></td><td>No outro lado da rua, ao lado do bloco 7</td><td class="coord-cell">-20.8026773, -41.1540053</td></tr>
+        <tr><td>10</td><td>Goiabeira</td><td><em>Psidium guajava</em></td><td>No outro lado da rua, direção ao bloco 7</td><td class="coord-cell">-20.8026491, -41.1539761</td></tr>
+        <tr><td>11</td><td>Cajueiro</td><td><em>Anacardium occidentale</em></td><td>No outro lado da rua, lateral à quadra</td><td class="coord-cell">-20.8023535, -41.1538179</td></tr>
+        <tr><td>12</td><td>Jambeiro</td><td><em>Syzygium jambos</em></td><td>Entre o bloco 9 e o bloco 7</td><td class="coord-cell">-20.8025729, -41.1541465</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Mapa embed OpenStreetMap centralizado no campus -->
+  <div class="mapa-embed-container">
+    <iframe
+      src="https://www.openstreetmap.org/export/embed.html?bbox=-41.1560,-20.8045,-41.1530,-20.8015&layer=mapnik&marker=-20.8033,-41.1544"
+      title="Mapa do Campus Ifes Cachoeiro de Itapemirim"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <p style="font-size:0.8rem; color:#888; margin-top:0.5rem; text-align:center;">
+    Mapa via OpenStreetMap © contribuidores. Campus Ifes Cachoeiro — Coordenadas centrais: -20.8033, -41.1544
+  </p>
+</section>
+
+<!-- ===== LLM INFO ===== -->
+<section id="llm-info" style="background:var(--verde-escuro); max-width:100%; padding:5rem 2rem;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="section-label">Transparência</p>
+    <h2 class="section-title">Sobre a Inteligência Artificial</h2>
+    <div class="divider"></div>
+
+    <div class="llm-grid">
+
+      <div class="llm-box">
+        <h3>🤖 LLM Utilizado</h3>
+        <p><strong style="color:#fff;">Claude Sonnet 4.6</strong> (Anthropic)</p>
+        <ul style="margin-top:0.8rem;">
+          <li>Família de modelos: Claude 4.6</li>
+          <li>Desenvolvido por: Anthropic</li>
+          <li>Interface utilizada: claude.ai</li>
+          <li>Data de uso: Março de 2026</li>
+        </ul>
+      </div>
+
+      <div class="llm-box">
+        <h3>📋 Prompt Principal Submetido</h3>
+        <div class="prompt-box">Preciso que você faça um código em HTML
+no bloco de notas com capa e o tema de
+árvores frutiferas do campus. A página HTML
+gerada deve representar as árvores frutíferas
+do Ifes Cachoeiro; informar o(s) LLM(s)
+utilizados; o(s) prompt(s) criado(s); e conter
+informações e fotos das espécies.
+
+Dados fornecidos (planilha Google Sheets):
+- Goiabeira (bloco 0 / biblioteca)
+- Amoreira (galpão)
+- Videira/Uva (bloco 0)
+- Limoeiro (bloco 0 e bloco 7)
+- Mangueira (bloco 1)
+- Aceroleira (bloco 5)
+- Coqueiro (galpão)
+- Goiabeira (quadra)
+- Cajueiro (quadra)
+- Jambeiro (bloco 7–9)
+Campus Cachoeiro de Itapemirim — Ifes</div>
+      </div>
+
+      <div class="llm-box">
+        <h3>🔍 Como a IA foi usada</h3>
+        <ul>
+          <li>Leitura e interpretação da planilha Google Sheets compartilhada</li>
+          <li>Geração do código HTML completo com CSS e design responsivo</li>
+          <li>Pesquisa de nomes científicos de cada espécie</li>
+          <li>Redação das descrições botânicas de cada árvore</li>
+          <li>Seleção de imagens livres (Wikimedia Commons)</li>
+          <li>Integração do mapa OpenStreetMap com as coordenadas reais</li>
+        </ul>
+      </div>
+
+      <div class="llm-box">
+        <h3>⚖️ Considerações Éticas</h3>
+        <p>
+          Todo o conteúdo descritivo foi gerado por IA com base em conhecimento
+          botânico consolidado. As imagens são provenientes do Wikimedia Commons
+          sob licenças livres. O mapa usa dados abertos do OpenStreetMap.
+          O código foi gerado integralmente por Claude (Anthropic) a partir
+          dos dados fornecidos pelos alunos.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p><strong>Árvores Frutíferas do Campus — Ifes Cachoeiro de Itapemirim</strong></p>
+  <p>Instituto Federal do Espírito Santo · Campus Cachoeiro de Itapemirim · ES · Brasil</p>
+  <p style="margin-top:0.6rem;">
+    Página gerada com auxílio de <strong>Claude Sonnet 4.6 (Anthropic)</strong> ·
+    Imagens via <strong>Wikimedia Commons</strong> (licenças livres) ·
+    Mapa via <strong>OpenStreetMap</strong> © contribuidores
+  </p>
+  <p style="margin-top:0.4rem;">Ifes – Campus Cachoeiro de Itapemirim · ES · Brasil</p>
+</footer>
+
+</body>
+</html>
